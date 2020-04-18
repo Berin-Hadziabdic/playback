@@ -1,0 +1,8 @@
+.nav-bar{
+    width: 80px;
+    height: 100%;
+    position: absolute;
+    top:0px;
+    left: 0px;
+    border-right: 2px solid black;
+}
