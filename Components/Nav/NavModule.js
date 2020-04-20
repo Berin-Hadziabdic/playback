@@ -2,14 +2,23 @@ import "./NavModuleStyles.css";
 import React from 'react';
 
 //This component returns rendered contents for a contracted nav-drawer.
+
+function NavButton(props){
+
+    return (<div className={props.buttonClass} onClick={(e) => props.navDrawerButtonClick(e)}> </div>)
+}
 function RetractedNavContents(props){
-    return (<p>placeholder</p>);
+    return (<NavButton buttonClass={props.buttonClass} navDrawerButtonClick={props.navDrawerButtonClick}/>);
 }
 //This component returns rendered contents for an extended nav-drawer.
 function ExtendedNavContents(props){
     const linkArray = props.links.map((link) => <li className="nav-link"> {link.title} </li>)
 
-    return (<ul>{linkArray}</ul>);
+    return (
+            <React.Fragment>
+                <NavButton buttonClass={props.buttonClass} navDrawerButtonClick={props.navDrawerButtonClick}/>
+                <ul>{linkArray}</ul>
+            </React.Fragment>);
 
 }
 
@@ -22,19 +31,29 @@ class NavDrawer extends React.Component {
         super(props)
         //extended in state is to communicate whether or not the nav drawer is extended (set to true),
         // retracted (set to false)!
-        this.state = {extended: true, links: props.links}
+        console.log(props.navDrawerButtonClick)
+        
     }
+
+   
+    getNavStyles = ( ) => {
+        const navStyle = this.props.extended ? "nav-bar nav-bar-extended" : "nav-bar";
+        return navStyle;
+    } 
 
     render (){
       //This line determines what to render in the Nav body based upon the states extended boolean value.
-      var nav_contents = this.state.extended ? <ExtendedNavContents links={this.state.links}/> : <RetractedNavContents/>
-    
+      
+      var nav_contents = this.props.extended ? <ExtendedNavContents  links={this.props.links} buttonClass={"nav-button"} navDrawerButtonClick = {this.props.navDrawerButtonClick} /> : <RetractedNavContents buttonClass="nav-button" navDrawerButtonClick={this.props.navDrawerButtonClick}/>
+      
       return (
-            <nav className="nav-bar">
+            <nav className={this.getNavStyles()}>
                 {nav_contents}
             </nav>
         );
     }
+
+
 }
 
 
