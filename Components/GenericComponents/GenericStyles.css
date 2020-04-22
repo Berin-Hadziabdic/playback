@@ -1,0 +1,24 @@
+.generic-button{
+    height:50px;
+    width:100px;
+    background-color: chartreuse;
+    color:white;
+}
+
+.job-listing{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height:100px;
+}
+
+.job-listing-text{
+    width: 40%;
+    height:inherit;
+    background-color: white;
+}
+
+.job-listings-button-wrapper{
+    width:20%;
+    height:inherit;
+}

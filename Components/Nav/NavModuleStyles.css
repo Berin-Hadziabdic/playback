@@ -5,8 +5,9 @@
     top:0px;
     left: 0px;
     border-right: 2px solid black;
-    z-index: 10;
-    background-color: cornflowerblue;
+    z-index: 100;
+    background-color: white;
+    
 }
 
 .nav-bar-extended{
@@ -18,5 +19,6 @@
     width: 50px;
     border-radius: 2px;
     border: 1px solid darkgreen;
+    background-color: lawngreen;
 }
 

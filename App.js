@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import NavDrawer from './Components/Nav/NavModule';
 import Body from './Components/Body/BodyModule';
+import JobListings from './Components/GenericComponents/JobListingsModule';
+import GenericHeading from './Components/GenericComponents/GenericHeading';
 
 
 //The App component has two primary functions.
@@ -29,11 +31,14 @@ class App extends React.Component {
   
  render() {
 
-  const LINKS = [{reference:"",title:"Completed Jobs"}, {reference: "",title:"In Progress Jobs"}]
+  const LINKS = [{reference:"",title:"Completed Jobs"}, {reference: "",title:"In Progress Jobs"},{reference: "",title:"Schedule A Job"}]
   return (
     <div className="App">
       <NavDrawer  links = {LINKS} navDrawerButtonClick={this.navDrawerButtonClick} extended = {this.state.extendedNav} links= {LINKS}/>
-      <Body  extended = {this.state.extendedNav}> Body content body content!</Body>
+      <Body  extended = {this.state.extendedNav}>
+        <GenericHeading value="Finished-Jobs"/>
+        <JobListings jobs={["X1344fesset","jTytul","144lkonj", "tuPIhnohb69"]}/>
+      </Body>
     </div>
   );
 }

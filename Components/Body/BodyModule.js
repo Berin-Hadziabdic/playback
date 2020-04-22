@@ -17,7 +17,7 @@ class Body extends React.Component {
             <div className="body">
                 {this.props.children}
             </div>
-        </div>)
+        </div>);
     }
 
     getStyles () {

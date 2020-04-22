@@ -7,13 +7,11 @@
     z-index: 0;
 }
 
-.not-extended-nav{
-    opacity: 0.0;
-}
+
 
 .extended-nav{
-    opacity: 1.0;
-    background-color: blueviolet;
+    opacity: 6.0;
+    background-color: gray;
 }
 
 .body{
