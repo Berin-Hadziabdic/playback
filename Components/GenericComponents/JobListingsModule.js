@@ -5,12 +5,12 @@ import GenericButton from './GenericButton.js';
 function JobListing(props)
 {
 return (
-         <section className={props.classNameJobListing||"job-listing"}>
-             <div className={props.classNameJobListingText || "job-listing-text"}> {props.data}</div>
-             <div className={props.classNameJobListingText || "job-listing-text"}>{props.data}</div>
-             <div className={props.clasNameJobListingButtonWrapper || "job-listing-button-wrapper"}>
-                 <GenericButton value="Button One" onClick = {function(){}}/>
-                 <GenericButton value="Button Two" onClick = {function(){}}/>
+         <section className={props.classNameJobListing||"row row-align-center"}>
+             <div className={props.classNameJobListingText || "col-4"}> {props.data}</div>
+             <div className={props.classNameJobListingText || "col-4"}>{props.data}</div>
+             <div className={props.clasNameJobListingButtonWrapper || "col-4 row row-align-end"}>
+                 <GenericButton className="col align-self-end"value="Button One" onClick = {function(){}}/>
+                 <GenericButton className="col align-self-end" value="Button Two" onClick = {function(){}}/>
              </div>
          </section>
         );
