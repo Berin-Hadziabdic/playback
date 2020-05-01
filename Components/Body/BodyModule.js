@@ -13,7 +13,7 @@ class Body extends React.Component {
     render()
     {
         return (
-        <div className={"app-body w-100 container-sm app-body"}>
+        <div className={"app-body w-100 container-sm app-body align-items-center"}>
             <div className="body">
                 {this.props.children}
             </div>

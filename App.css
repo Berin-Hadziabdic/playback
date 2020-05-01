@@ -3,7 +3,7 @@
 }
 
 html{
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(159,108,154,1) 0%, rgba(255,248,126,1) 100%);
+  background: #080801;
 
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -13,8 +13,9 @@ html{
 }
 
 .App{
-  background-color: #131732;
+ 
   padding-top:20px;
+  background-color: white;
 }
 
 .App-link {
