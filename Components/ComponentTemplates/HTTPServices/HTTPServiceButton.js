@@ -9,7 +9,10 @@ function sendRequest(url,data,HTTPServiceClient){
     alert("Send request function in progress")
 }
 
-//This button onClick method 
+//This button onClick method sends a request to the server. The server's response
+//is caught by the XMLHTTP request in the send request function. The response
+//is then passed off to the HTTPServiceCLient which will update the apps state
+//accordingly.
 function HTTPServiceButton(props){
 
     return (

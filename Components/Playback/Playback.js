@@ -10,16 +10,14 @@ import Body from '../Body/BodyModule';
 import BackNavHeadingTemplate from '../ComponentTemplates/BackNavHeadingTemplate'
 import NavListing from "../ComponentTemplates/Listings";
 import Navbar from "../Nav/Navbar"
+import HTTPClientEndPoint from '../ComponentTemplates/HTTPServices/HTTPClientEndPoint'
 
 
 
 
-//This class fetches URL -> Job mappings
-//So far we have completed jobs and in progress jobs.
-//It can be used to satisfy the app requirements of both.
-class UrlInfoService {
+//This class reports URLS and URL->[job list mappings] for the playback app.
+class UrlJobInfo {
 
-  //might want to query dbs for data in cstr or in playback component not sure yet.
   constructor(urlData)
   {
     this.urlInfo =  urlData
@@ -37,7 +35,7 @@ class UrlInfoService {
 
   //Returns a list of one or more url assigned jobs or null for a url with no jobs.
   getUrlJobs = (url) => {
-    let ret_val = <div>placeholder no jobs completed for this url</div>;
+    let ret_val = <div>PLACEHOLDER no jobs completed for this url</div>;
     //if state[type] or state[type][url] is not undefined, then set the return value to whatever value is stored.
     if(this.urlInfo[url]!== undefined  && this.urlInfo[url].length > 0)
     {
@@ -48,12 +46,12 @@ class UrlInfoService {
 
   //This method checks for equality of one UrlInfoService object to another.
   //This method will be used to supply one of possibly many boolean values
-  //to determine whether or not to update UrlInfoService.
+  //to determine whether or not to update the state of the main PlayBack app.
   equals (other)
   {
     let ret_val = false;
 
-    if( other instanceof UrlInfoService && Array.equals(this.urlInfo,other.urlInfo) )
+    if( other instanceof UrlJobInfo && Array.equals(this.urlInfo,other.urlInfo) )
       ret_val = true;
 
     return ret_val
@@ -69,27 +67,28 @@ class PlayBack extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-         //URLS will be values supplied by DB. Links can be hardcoded or supplied by DB.
-         CompletedJobsUrls : new UrlInfoService({ "www.google.com":["1-x-x-placeholder","2-x-x-placeholder"],"www.google2.com":
+         //Completed and InProgress URLS and job lists will be supplied by the database
+         //For now they are hardcoded in.
+         CompletedJobsUrls : new UrlJobInfo({ "www.google.com":["1-x-x-placeholder","2-x-x-placeholder"],"www.google2.com":
          ["1-x-x-placeholder","2-x-x-placeholder"],"www.google3.com":["1-x-x-placeholder"]}),
-         InProgressJobsUrls: new UrlInfoService({ "www.facebook.com":["1-2-x-placeholder","2-x-x-placeholder"],"www.dogpile.com":
+         InProgressJobsUrls: new UrlJobInfo({ "www.facebook.com":["1-2-x-placeholder","2-x-x-placeholder"],"www.dogpile.com":
          ["1-x-x-placeholder","2-x-x-placeholder"]})
 
     }
 
-    //("left of debuggin the creation of Completed urlJOBS and inprogress url jobs lists not rendering")
   }
 
     
   
 
 
-    //This app builds many dynamic routes that are not hardcoded.
+    //This app builds many dynamic routes.
     //buildDynamicRoutes is the function responsible for accomplishing this.
     // All dynamic routes are built here as opposed to grouping off each set of dynamic
-    // routes into their own function for convinience. Each set of routes is however demarcated
+    // routes into their own function for convinience. Each set of routes is  demarcated
     // by comments. 
     buildDynamicRoutes = () => {
+      let inProgressUrls = this.state.InProgressJobsUrls.getUrls()
       let completedUrls = this.state.CompletedJobsUrls.getUrls() //Contains all urls for which capture is complete.
       let routeList = []    //This list contains all Routes, dynamic or static, the app employs.
       
@@ -99,10 +98,26 @@ class PlayBack extends React.Component {
       //Build completedjobs routes START--------------------
       concatRoutes = ( 
         <Route exact path="/completedjobs"> 
-            <BackNavHeadingTemplate>Completed Captures</BackNavHeadingTemplate>
+            <BackNavHeadingTemplate>Completed Jobs</BackNavHeadingTemplate>
             {
               completedUrls.map((url) => {
               let route = "/completed" + url + "jobs"
+              return (<NavListing listingTitle={"Completed Captured Jobs"} value={url} buttons={[{name:"Select", route:route }]}/>);
+             })
+          }
+        </Route>
+        );
+
+      routeList = routeList.concat(concatRoutes)
+      //Build /completedroutes FINISH-------------------------
+      //*************************************************** */
+      //Build /inprogressjobs routes START--------------------
+      concatRoutes = ( 
+        <Route exact path="/inprogressjobs"> 
+            <BackNavHeadingTemplate>In Progress Captures</BackNavHeadingTemplate>
+            {
+              inProgressUrls.map((url) => {
+              let route = "/inprogress" + url + "jobs"
               return (<NavListing listingTitle={"Completed Captured Jobs"} value={url} buttons={[{name:"Select", route:route }]}/>);
              })
           }
@@ -134,7 +149,26 @@ class PlayBack extends React.Component {
 
       }
       ////build /completed{DYNAMICURL}jobs FINISH-------------
-    
+      for(let i in inProgressUrls)
+      {
+          url_iterator = inProgressUrls[i]
+          let urlJobsList = this.state.InProgressJobsUrls.getUrlJobs(url_iterator) //get all completed jobs assigned to a url
+          let route = "/inprogress" + url_iterator + "jobs";
+
+          concatRoutes = (
+            <Route exact path={route}>
+                <BackNavHeadingTemplate>{"InProgress Jobs For URL " + url_iterator}</BackNavHeadingTemplate>
+                {
+                    urlJobsList.map((urlJob) => {
+                    return (<NavListing  value={urlJob} buttons={[{name:"Cancel", route:route },{name:"Pause", route:route }]}/>);
+                    })
+                }
+            </Route>
+            
+          );
+          routeList = routeList.concat(concatRoutes)
+
+      }
       //Return the list of all routes and their assigned components for rendering.
       return (
               <React.Fragment> 
